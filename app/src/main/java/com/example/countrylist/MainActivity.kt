@@ -14,15 +14,18 @@ import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.example.countrylist.adapter.CountryAdapter
 
-
 class MainActivity : AppCompatActivity(), CountryAdapter.RVOnClickListener {
 
-    lateinit var mainResponse: Response<CountriesListQuery.Data>
+    private lateinit var mainResponse: Response<CountriesListQuery.Data>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+//        val apolloConfig = ApolloConfig()
+//        mainResponse = apolloConfig.getCountryList()
+//        runOnUiThread {
+//            bindToRecyclerview(mainResponse)
+//        }
         val apolloClient = ApolloClient.builder()
             .serverUrl("https://countries.trevorblades.com")
             .build()
@@ -46,7 +49,8 @@ class MainActivity : AppCompatActivity(), CountryAdapter.RVOnClickListener {
     @SuppressLint("WrongConstant")
     fun bindToRecyclerview(countriesList: List<CountriesListQuery.Country>) {
         val recyclerView = findViewById<RecyclerView>(R.id.countriesRV)
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
+        recyclerView.layoutManager = LinearLayoutManager(this,
+            LinearLayout.VERTICAL, false)
         val recyclerViewAdapter = CountryAdapter(countriesList, this)
         recyclerView.adapter = recyclerViewAdapter
         recyclerViewAdapter.notifyDataSetChanged()
