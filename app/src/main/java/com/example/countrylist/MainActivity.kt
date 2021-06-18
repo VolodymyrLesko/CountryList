@@ -13,37 +13,38 @@ import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.example.countrylist.adapter.CountryAdapter
+import com.example.countrylist.config.ApolloConfig
 
 class MainActivity : AppCompatActivity(), CountryAdapter.RVOnClickListener {
 
-    private lateinit var mainResponse: Response<CountriesListQuery.Data>
+    private lateinit var mainResponse: List<CountriesListQuery.Country>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-//        val apolloConfig = ApolloConfig()
-//        mainResponse = apolloConfig.getCountryList()
-//        runOnUiThread {
-//            bindToRecyclerview(mainResponse)
-//        }
-        val apolloClient = ApolloClient.builder()
-            .serverUrl("https://countries.trevorblades.com")
-            .build()
-
-        apolloClient.query(CountriesListQuery())
-            .enqueue(object : ApolloCall.Callback<CountriesListQuery.Data>() {
-                override fun onFailure(e: ApolloException) {
-                    Log.d("ApolloResult", e.localizedMessage ?: "Error")
-                }
-
-                override fun onResponse(response: Response<CountriesListQuery.Data>) {
-                    mainResponse = response
-                    Log.d("ApolloResult", response.data?.countries.toString())
-                    runOnUiThread {
-                        response.data?.countries?.let { bindToRecyclerview(it) }
-                    }
-                }
-            })
+        val apolloConfig = ApolloConfig()
+        mainResponse = apolloConfig.getCountryList()
+        runOnUiThread {
+            bindToRecyclerview(mainResponse)
+        }
+//        val apolloClient = ApolloClient.builder()
+//            .serverUrl("https://countries.trevorblades.com")
+//            .build()
+//
+//        apolloClient.query(CountriesListQuery())
+//            .enqueue(object : ApolloCall.Callback<CountriesListQuery.Data>() {
+//                override fun onFailure(e: ApolloException) {
+//                    Log.d("ApolloResult", e.localizedMessage ?: "Error")
+//                }
+//
+//                override fun onResponse(response: Response<CountriesListQuery.Data>) {
+//                    mainResponse = response
+//                    Log.d("ApolloResult", response.data?.countries.toString())
+//                    runOnUiThread {
+//                        response.data?.countries?.let { bindToRecyclerview(it) }
+//                    }
+//                }
+//            })
     }
 
     @SuppressLint("WrongConstant")
@@ -58,7 +59,7 @@ class MainActivity : AppCompatActivity(), CountryAdapter.RVOnClickListener {
 
     override fun onClick(position: Int) {
         intent = Intent(this, DetailsActivity::class.java)
-        intent.putExtra("code", mainResponse.data?.countries?.get(position)?.code)
+        intent.putExtra("code", mainResponse[position].code)
         startActivity(intent)
     }
 
