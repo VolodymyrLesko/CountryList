@@ -9,11 +9,11 @@ import com.example.countrylist.CountriesListQuery
 
 class ApolloConfig(
     private var apolloClient: ApolloClient = ApolloClient.builder()
-        .serverUrl("https://countries.trevorblades.com")
+        .serverUrl(URL)
         .build()) {
 
     fun getCountryList(): List<CountriesListQuery.Country> {
-        var result: MutableList<CountriesListQuery.Country> = ArrayList()
+        val result: MutableList<CountriesListQuery.Country> = ArrayList()
         apolloClient.query(CountriesListQuery())
             .enqueue(object : ApolloCall.Callback<CountriesListQuery.Data>() {
                 override fun onFailure(e: ApolloException) {
@@ -27,5 +27,8 @@ class ApolloConfig(
                 }
             })
         return result
+    }
+    companion object {
+        const val URL = "https://countries.trevorblades.com"
     }
 }

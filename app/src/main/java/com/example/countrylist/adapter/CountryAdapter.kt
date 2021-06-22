@@ -12,22 +12,7 @@ class CountryAdapter(
     private val countriesList: List<CountriesListQuery.Country>,
     private val listener: RVOnClickListener
 ) :
-    RecyclerView.Adapter<CountryAdapter.ViewHolder>() {
-
-    class ViewHolder(itemView: View, private val listener: RVOnClickListener) :
-        RecyclerView.ViewHolder(itemView), View.OnClickListener {
-        val txtTitle: TextView = itemView.findViewById(R.id.country_name)
-        val txtCapital: TextView = itemView.findViewById(R.id.capital_name)
-        val txtRegion: TextView = itemView.findViewById(R.id.region_name)
-
-        init {
-            itemView.setOnClickListener(this)
-        }
-
-        override fun onClick(v: View?) {
-            listener.onClick(adapterPosition)
-        }
-    }
+    RecyclerView.Adapter<ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.country_card, parent, false)
