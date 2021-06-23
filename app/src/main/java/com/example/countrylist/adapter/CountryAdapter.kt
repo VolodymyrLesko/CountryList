@@ -1,25 +1,27 @@
 package com.example.countrylist.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.countrylist.CountriesListQuery
 import com.example.countrylist.R
 
 class CountryAdapter(
-    private val countriesList: List<CountriesListQuery.Country>,
+    var countriesList: MutableList<CountriesListQuery.Country>,
     private val listener: RVOnClickListener
 ) :
-    RecyclerView.Adapter<ViewHolder>() {
+    RecyclerView.Adapter<CountryListViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountryListViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.country_card, parent, false)
-        return ViewHolder(v, listener);
+        return CountryListViewHolder(v, listener);
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    fun setList(countriesList: MutableList<CountriesListQuery.Country>) {
+        this.countriesList = countriesList
+    }
+
+    override fun onBindViewHolder(holder: CountryListViewHolder, position: Int) {
         holder.txtTitle.text = countriesList[position].name
         holder.txtCapital.text = countriesList[position].capital
         holder.txtRegion.text = countriesList[position].continent.name
