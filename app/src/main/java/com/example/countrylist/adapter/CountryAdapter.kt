@@ -19,6 +19,7 @@ class CountryAdapter(
 
     fun setList(countriesList: MutableList<CountriesListQuery.Country>) {
         this.countriesList = countriesList
+        notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: CountryListViewHolder, position: Int) {
