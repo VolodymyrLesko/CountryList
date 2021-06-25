@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.countrylist.CountriesListQuery
 import com.example.countrylist.R
+import com.example.countrylist.adapter.viewHolders.CountryListViewHolder
 
 class CountryAdapter(
     var countriesList: MutableList<CountriesListQuery.Country>,

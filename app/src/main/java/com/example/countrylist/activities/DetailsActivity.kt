@@ -1,23 +1,20 @@
 package com.example.countrylist.activities
 
-import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.apollographql.apollo.ApolloCall
-import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.api.Response
-import com.apollographql.apollo.exception.ApolloException
 import com.example.countrylist.GetCountryQuery
 import com.example.countrylist.R
 import com.example.countrylist.adapter.LanguageAdapter
+import com.example.countrylist.repository.implementation.CountryRepositoryImpl
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 class DetailsActivity : AppCompatActivity() {
-    lateinit var languageRecyclerView: RecyclerView
+    private lateinit var languageRecyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,36 +24,29 @@ class DetailsActivity : AppCompatActivity() {
         val txtRegion: TextView = findViewById(R.id.details_region_name)
         val txtCurrency: TextView = findViewById(R.id.details_curency)
         languageRecyclerView = findViewById(R.id.langRV)
-        languageRecyclerView.layoutManager = LinearLayoutManager(this,
-            RecyclerView.HORIZONTAL, false)
-
-        val apolloClient = ApolloClient.builder()
-            .serverUrl("https://countries.trevorblades.com")
-            .build()
-
-        if (intent.extras != null) {
-            apolloClient.query(GetCountryQuery(intent.extras!!.getString("code", "")))
-                .enqueue(object : ApolloCall.Callback<GetCountryQuery.Data>() {
-                    override fun onFailure(e: ApolloException) {
-                        Log.d("ApolloResult", e.localizedMessage ?: "Error")
-                    }
-
-                    override fun onResponse(response: Response<GetCountryQuery.Data>) {
-                        Log.d("ApolloResult", response.data.toString())
-                        runOnUiThread {
-                            txtName.text = response.data?.country?.name
-                            txtCapital.text = response.data?.country?.capital
-                            txtRegion.text = response.data?.country?.continent?.name
-                            txtCurrency.text = response.data?.country?.currency
-                            response.data?.country?.languages?.let { bindToRecyclerview(it) }
-                        }
-                    }
+        languageRecyclerView.layoutManager = LinearLayoutManager(
+            this,
+            RecyclerView.HORIZONTAL, false
+        )
+        val recyclerViewAdapter = LanguageAdapter(ArrayList())
+        languageRecyclerView.adapter = recyclerViewAdapter
+        intent.extras?.getString("code")?.let {
+            getCountry(it)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ data ->
+                    txtName.text = data.country?.name
+                    txtCapital.text = data.country?.capital
+                    txtRegion.text = data.country?.continent?.name
+                    txtCurrency.text = data.country?.currency
+                    data.country?.languages?.let { recyclerViewAdapter.setList(it) }
+                }, {
+                    it.printStackTrace()
                 })
         }
     }
 
-    fun bindToRecyclerview(languageList: List<GetCountryQuery.Language>) {
-        val recyclerViewAdapter = LanguageAdapter(languageList)
-        languageRecyclerView.adapter = recyclerViewAdapter
+    private fun getCountry(countryCode: String): Single<GetCountryQuery.Data> {
+        return CountryRepositoryImpl().getCountryDetails(countryCode)
     }
 }
