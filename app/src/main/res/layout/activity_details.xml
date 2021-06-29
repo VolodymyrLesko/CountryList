@@ -115,7 +115,6 @@
             android:id="@+id/details_country_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="country"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -129,7 +128,6 @@
             android:id="@+id/details_capital_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="capital"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -143,7 +141,6 @@
             android:id="@+id/details_region_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="region"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -157,7 +154,6 @@
             android:id="@+id/details_curency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="currency"
             android:textSize="20sp"
             android:textStyle="bold" />
 

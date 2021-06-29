@@ -13,7 +13,8 @@ import io.reactivex.rxjava3.core.Single
 class CountryRepositoryImpl(
     private var apolloClient: ApolloClient = ApolloClient.builder()
         .serverUrl(URL)
-        .build()): CountryRepository {
+        .build()
+) : CountryRepository {
 
     override fun getCountryList(): Single<List<CountriesListQuery.Country>> {
         return Single.create { emitter ->
@@ -52,6 +53,7 @@ class CountryRepositoryImpl(
                 })
         }
     }
+
     companion object {
         const val URL = "https://countries.trevorblades.com"
     }

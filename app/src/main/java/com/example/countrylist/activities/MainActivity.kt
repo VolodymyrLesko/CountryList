@@ -8,15 +8,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.countrylist.CountriesListQuery
 import com.example.countrylist.R
 import com.example.countrylist.adapter.CountryAdapter
+import com.example.countrylist.contracts.MainActivityContract
+import com.example.countrylist.presenters.MainActivityPresenter
 import com.example.countrylist.repository.implementation.CountryRepositoryImpl
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-class MainActivity : AppCompatActivity(), CountryAdapter.RVOnClickListener {
+class MainActivity : AppCompatActivity(), CountryAdapter.RVOnClickListener,
+    MainActivityContract.View {
 
     private var countriesList: MutableList<CountriesListQuery.Country> = ArrayList()
     private lateinit var recyclerView: RecyclerView
+
+    private lateinit var presenter: MainActivityContract.Presenter
+    lateinit var recyclerViewAdapter: CountryAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,22 +30,20 @@ class MainActivity : AppCompatActivity(), CountryAdapter.RVOnClickListener {
 
         recyclerView = findViewById(R.id.countriesRV)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val recyclerViewAdapter = CountryAdapter(countriesList, this)
+        recyclerViewAdapter = CountryAdapter(countriesList, this)
         recyclerView.adapter = recyclerViewAdapter
 
-        getList()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                countriesList = it as MutableList<CountriesListQuery.Country>
-                recyclerViewAdapter.setList(countriesList)
-            }, {
-                it.printStackTrace()
-            })
+        setPresenter(MainActivityPresenter(this, CountryRepositoryImpl()))
+        presenter.onViewCreated()
     }
 
-    private fun getList(): Single<List<CountriesListQuery.Country>> {
-        return CountryRepositoryImpl().getCountryList()
+    override fun onDestroy() {
+        presenter.onDestroy()
+        super.onDestroy()
+    }
+
+    override fun setPresenter(presenter: MainActivityContract.Presenter) {
+        this.presenter = presenter
     }
 
     override fun onClick(position: Int) {
@@ -50,5 +54,17 @@ class MainActivity : AppCompatActivity(), CountryAdapter.RVOnClickListener {
 
     companion object {
         const val CODE = "code"
+    }
+
+    override fun displayCountriesList(countriesList: Single<List<CountriesListQuery.Country>>) {
+        countriesList
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                this.countriesList = it as MutableList<CountriesListQuery.Country>
+                this.recyclerViewAdapter.setList(it)
+            }, {
+                it.printStackTrace()
+            })
     }
 }
