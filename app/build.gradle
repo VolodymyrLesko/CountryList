@@ -42,6 +42,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'com.apollographql.apollo:apollo-runtime:2.5.5'
     implementation 'com.apollographql.apollo:apollo-coroutines-support:2.5.5'
+    implementation 'com.apollographql.apollo:apollo-rx3-support:2.5.5'
 
     //RxJava
     implementation 'io.reactivex.rxjava3:rxjava:3.0.13'

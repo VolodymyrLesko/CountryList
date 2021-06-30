@@ -2,6 +2,8 @@ package com.example.countrylist.presenters
 
 import com.example.countrylist.contracts.MainActivityContract
 import com.example.countrylist.repository.implementation.CountryRepositoryImpl
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 class MainActivityPresenter(
     view: MainActivityContract.View,
@@ -15,7 +17,15 @@ class MainActivityPresenter(
     }
 
     override fun onLoadCountriesList() {
-        view?.displayCountriesList(countryRepository.getCountryList())
+        countryRepository.getCountryList()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                it.data?.let { it1 -> view?.displayCountriesList(it1.countries) }
+            }, {
+                it.printStackTrace()
+            })
+
     }
 
     override fun onDestroy() {

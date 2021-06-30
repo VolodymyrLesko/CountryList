@@ -11,9 +11,6 @@ import com.example.countrylist.adapter.CountryAdapter
 import com.example.countrylist.contracts.MainActivityContract
 import com.example.countrylist.presenters.MainActivityPresenter
 import com.example.countrylist.repository.implementation.CountryRepositoryImpl
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.schedulers.Schedulers
 
 class MainActivity : AppCompatActivity(), CountryAdapter.RVOnClickListener,
     MainActivityContract.View {
@@ -56,15 +53,8 @@ class MainActivity : AppCompatActivity(), CountryAdapter.RVOnClickListener,
         const val CODE = "code"
     }
 
-    override fun displayCountriesList(countriesList: Single<List<CountriesListQuery.Country>>) {
-        countriesList
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                this.countriesList = it as MutableList<CountriesListQuery.Country>
-                this.recyclerViewAdapter.setList(it)
-            }, {
-                it.printStackTrace()
-            })
+    override fun displayCountriesList(countriesList: List<CountriesListQuery.Country>) {
+        this.countriesList = countriesList as MutableList<CountriesListQuery.Country>
+        this.recyclerViewAdapter.setList(countriesList)
     }
 }
