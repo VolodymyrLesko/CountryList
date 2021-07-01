@@ -5,7 +5,7 @@ import com.example.countrylist.presenters.BasePresenter
 import com.example.countrylist.views.BaseView
 
 interface MainActivityContract {
-interface Presenter : BasePresenter {
+    interface Presenter : BasePresenter {
         fun onViewCreated()
         fun onLoadCountriesList()
     }

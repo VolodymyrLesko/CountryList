@@ -24,6 +24,8 @@ class MainActivityPresenter(
                 it.data?.let { it1 -> view?.displayCountriesList(it1.countries) }
             }, {
                 it.printStackTrace()
+            }, {
+                view?.hideProgressBar()
             })
     }
 

@@ -20,6 +20,8 @@ class DetailsActivityPresenter(
                 view?.displayCountryDetails(it)
             }, {
                 it.printStackTrace()
+            }, {
+                view?.hideProgressBar()
             })
     }
 

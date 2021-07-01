@@ -1,6 +1,7 @@
 package com.example.countrylist.activities
 
 import android.os.Bundle
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,11 +20,13 @@ class DetailsActivity : AppCompatActivity(), DetailsActivityContract.View {
     private lateinit var txtCapital: TextView
     private lateinit var txtRegion: TextView
     private lateinit var txtCurrency: TextView
-    lateinit var languageAdapter: LanguageAdapter
+    private lateinit var languageAdapter: LanguageAdapter
+    private lateinit var detailsProgressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
+        detailsProgressBar = findViewById(R.id.detailsProgressBar)
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.include)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -58,5 +61,9 @@ class DetailsActivity : AppCompatActivity(), DetailsActivityContract.View {
 
     override fun setPresenter(presenter: DetailsActivityContract.Presenter) {
         this.detailsActivityPresenter = presenter
+    }
+
+    override fun hideProgressBar() {
+        detailsProgressBar.visibility = ProgressBar.GONE
     }
 }

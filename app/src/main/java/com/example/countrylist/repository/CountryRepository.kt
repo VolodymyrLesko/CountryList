@@ -3,9 +3,9 @@ package com.example.countrylist.repository
 import com.apollographql.apollo.api.Response
 import com.example.countrylist.CountriesListQuery
 import com.example.countrylist.GetCountryQuery
-import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.core.Observable
 
 interface CountryRepository {
-    fun getCountryList(): Single<Response<CountriesListQuery.Data>>
-    fun getCountryDetails(countryCode: String): Single<Response<GetCountryQuery.Data>>
+    fun getCountryList(): Observable<Response<CountriesListQuery.Data>>
+    fun getCountryDetails(countryCode: String): Observable<Response<GetCountryQuery.Data>>
 }

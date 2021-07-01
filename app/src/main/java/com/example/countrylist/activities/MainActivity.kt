@@ -2,6 +2,7 @@ package com.example.countrylist.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,12 +19,14 @@ class MainActivity : AppCompatActivity(), CountryAdapter.RVOnClickListener,
     private var countriesList: MutableList<CountriesListQuery.Country> = ArrayList()
 
     private lateinit var mainActivityPresenter: MainActivityContract.Presenter
-    lateinit var countryAdapter: CountryAdapter
+    private lateinit var countryAdapter: CountryAdapter
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        progressBar = findViewById(R.id.mainProgressBar)
         val countryListRV = findViewById<RecyclerView>(R.id.countriesRV)
         countryAdapter = CountryAdapter(this)
         countryListRV.apply {
@@ -57,5 +60,9 @@ class MainActivity : AppCompatActivity(), CountryAdapter.RVOnClickListener,
     override fun displayCountriesList(countriesList: List<CountriesListQuery.Country>) {
         this.countriesList = countriesList as MutableList<CountriesListQuery.Country>
         this.countryAdapter.setList(countriesList)
+    }
+
+    override fun hideProgressBar() {
+        progressBar.visibility = ProgressBar.GONE
     }
 }

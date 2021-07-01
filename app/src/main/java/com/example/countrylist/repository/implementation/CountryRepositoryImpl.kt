@@ -6,7 +6,7 @@ import com.apollographql.apollo.rx3.rxQuery
 import com.example.countrylist.CountriesListQuery
 import com.example.countrylist.GetCountryQuery
 import com.example.countrylist.repository.CountryRepository
-import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.core.Observable
 
 class CountryRepositoryImpl(
     private var apolloClient: ApolloClient = ApolloClient.builder()
@@ -14,13 +14,12 @@ class CountryRepositoryImpl(
         .build()
 ) : CountryRepository {
 
-    override fun getCountryList(): Single<Response<CountriesListQuery.Data>> {
-        return Single.fromObservable(apolloClient.rxQuery(CountriesListQuery()))
+    override fun getCountryList(): Observable<Response<CountriesListQuery.Data>> {
+        return apolloClient.rxQuery(CountriesListQuery())
     }
 
-    override fun getCountryDetails(countryCode: String): Single<Response<GetCountryQuery.Data>> {
-        val observableDetails = apolloClient.rxQuery(GetCountryQuery(countryCode))
-        return Single.fromObservable(observableDetails)
+    override fun getCountryDetails(countryCode: String): Observable<Response<GetCountryQuery.Data>> {
+        return apolloClient.rxQuery(GetCountryQuery(countryCode))
     }
 
     companion object {
