@@ -16,36 +16,37 @@ class MainActivity : AppCompatActivity(), CountryAdapter.RVOnClickListener,
     MainActivityContract.View {
 
     private var countriesList: MutableList<CountriesListQuery.Country> = ArrayList()
-    private lateinit var recyclerView: RecyclerView
 
-    private lateinit var presenter: MainActivityContract.Presenter
-    lateinit var recyclerViewAdapter: CountryAdapter
+    private lateinit var mainActivityPresenter: MainActivityContract.Presenter
+    lateinit var countryAdapter: CountryAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        recyclerView = findViewById(R.id.countriesRV)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerViewAdapter = CountryAdapter(countriesList, this)
-        recyclerView.adapter = recyclerViewAdapter
-
+        val countryListRV = findViewById<RecyclerView>(R.id.countriesRV)
+        countryAdapter = CountryAdapter(this)
+        countryListRV.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = countryAdapter
+        }
         setPresenter(MainActivityPresenter(this, CountryRepositoryImpl()))
-        presenter.onViewCreated()
+        mainActivityPresenter.onViewCreated()
     }
 
     override fun onDestroy() {
-        presenter.onDestroy()
+        mainActivityPresenter.onDestroy()
         super.onDestroy()
     }
 
     override fun setPresenter(presenter: MainActivityContract.Presenter) {
-        this.presenter = presenter
+        this.mainActivityPresenter = presenter
     }
 
     override fun onClick(position: Int) {
-        intent = Intent(this, DetailsActivity::class.java)
-        intent.putExtra(CODE, countriesList[position].code)
+        intent = Intent(this, DetailsActivity::class.java).apply {
+            putExtra(CODE, countriesList[position].code)
+        }
         startActivity(intent)
     }
 
@@ -55,6 +56,6 @@ class MainActivity : AppCompatActivity(), CountryAdapter.RVOnClickListener,
 
     override fun displayCountriesList(countriesList: List<CountriesListQuery.Country>) {
         this.countriesList = countriesList as MutableList<CountriesListQuery.Country>
-        this.recyclerViewAdapter.setList(countriesList)
+        this.countryAdapter.setList(countriesList)
     }
 }

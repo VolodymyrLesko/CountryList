@@ -8,14 +8,14 @@ import com.example.countrylist.R
 import com.example.countrylist.adapter.viewHolders.CountryListViewHolder
 
 class CountryAdapter(
-    var countriesList: MutableList<CountriesListQuery.Country>,
-    private val listener: RVOnClickListener
-) :
+    private val listener: RVOnClickListener) :
     RecyclerView.Adapter<CountryListViewHolder>() {
 
+    private var countriesList = emptyList<CountriesListQuery.Country>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountryListViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.country_card, parent, false)
-        return CountryListViewHolder(v, listener);
+        val item = LayoutInflater.from(parent.context).inflate(R.layout.country_card, parent, false)
+        return CountryListViewHolder(item, listener);
     }
 
     fun setList(countriesList: MutableList<CountriesListQuery.Country>) {
@@ -24,9 +24,13 @@ class CountryAdapter(
     }
 
     override fun onBindViewHolder(holder: CountryListViewHolder, position: Int) {
-        holder.txtTitle.text = countriesList[position].name
-        holder.txtCapital.text = countriesList[position].capital
-        holder.txtRegion.text = countriesList[position].continent.name
+        with(holder) {
+            countriesList[position].apply {
+                txtTitle.text = name
+                txtCapital.text = capital
+                txtRegion.text = continent.name
+            }
+        }
     }
 
     override fun getItemCount(): Int {

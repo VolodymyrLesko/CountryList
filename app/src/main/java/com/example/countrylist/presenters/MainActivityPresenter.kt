@@ -25,7 +25,6 @@ class MainActivityPresenter(
             }, {
                 it.printStackTrace()
             })
-
     }
 
     override fun onDestroy() {

@@ -14,35 +14,37 @@ import com.example.countrylist.presenters.DetailsActivityPresenter
 import com.example.countrylist.repository.implementation.CountryRepositoryImpl
 
 class DetailsActivity : AppCompatActivity(), DetailsActivityContract.View {
-    private lateinit var languageRecyclerView: RecyclerView
-    private lateinit var presenter: DetailsActivityContract.Presenter
+    private lateinit var detailsActivityPresenter: DetailsActivityContract.Presenter
     private lateinit var txtName: TextView
     private lateinit var txtCapital: TextView
     private lateinit var txtRegion: TextView
     private lateinit var txtCurrency: TextView
-    lateinit var recyclerViewAdapter: LanguageAdapter
+    lateinit var languageAdapter: LanguageAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
+        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.include)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         txtName = findViewById(R.id.details_country_name)
         txtCapital = findViewById(R.id.details_capital_name)
         txtRegion = findViewById(R.id.details_region_name)
         txtCurrency = findViewById(R.id.details_curency)
-        languageRecyclerView = findViewById(R.id.langRV)
-        languageRecyclerView.layoutManager = LinearLayoutManager(
-            this,
-            RecyclerView.HORIZONTAL, false
-        )
-        recyclerViewAdapter = LanguageAdapter(ArrayList())
-        languageRecyclerView.adapter = recyclerViewAdapter
+        val languageRecyclerView = findViewById<RecyclerView>(R.id.langRV)
+        languageAdapter = LanguageAdapter()
+        languageRecyclerView.apply {
+            languageRecyclerView.layoutManager = LinearLayoutManager(
+                this@DetailsActivity, RecyclerView.HORIZONTAL, false
+            )
+            languageRecyclerView.adapter = languageAdapter
+        }
         setPresenter(DetailsActivityPresenter(this, CountryRepositoryImpl()))
-        intent.extras?.getString("code")?.let { presenter.onLoadCountryDetails(it) }
-
+        intent.extras?.getString("code")?.let { detailsActivityPresenter.onLoadCountryDetails(it) }
     }
 
     override fun onDestroy() {
-        presenter.onDestroy()
+        detailsActivityPresenter.onDestroy()
         super.onDestroy()
     }
 
@@ -51,10 +53,10 @@ class DetailsActivity : AppCompatActivity(), DetailsActivityContract.View {
         txtCapital.text = countryDetails.data?.country?.capital
         txtRegion.text = countryDetails.data?.country?.continent?.name
         txtCurrency.text = countryDetails.data?.country?.currency
-        countryDetails.data?.country?.languages?.let { recyclerViewAdapter.setList(it) }
+        countryDetails.data?.country?.languages?.let { languageAdapter.setList(it) }
     }
 
     override fun setPresenter(presenter: DetailsActivityContract.Presenter) {
-        this.presenter = presenter
+        this.detailsActivityPresenter = presenter
     }
 }

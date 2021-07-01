@@ -7,8 +7,10 @@ import com.example.countrylist.GetCountryQuery
 import com.example.countrylist.R
 import com.example.countrylist.adapter.viewHolders.LanguageViewHolder
 
-class LanguageAdapter(private var languageList: List<GetCountryQuery.Language>) :
+class LanguageAdapter() :
     RecyclerView.Adapter<LanguageViewHolder>() {
+
+    private var languagesList = emptyList<GetCountryQuery.Language>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LanguageViewHolder {
         val v = LayoutInflater.from(parent.context)
@@ -17,15 +19,15 @@ class LanguageAdapter(private var languageList: List<GetCountryQuery.Language>) 
     }
 
     override fun onBindViewHolder(holder: LanguageViewHolder, position: Int) {
-        holder.txtName.text = languageList[position].name
+        holder.txtName.text = languagesList[position].name
     }
 
     override fun getItemCount(): Int {
-        return languageList.size
+        return languagesList.size
     }
 
     fun setList(languageList: List<GetCountryQuery.Language>) {
-        this.languageList = languageList
+        this.languagesList = languageList
         notifyDataSetChanged()
     }
 }
