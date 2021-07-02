@@ -3,6 +3,5 @@
     <style name="ActionBarCustom">
         <item name="android:textSize">20sp</item>
         <item name="android:background">@color/bronze_300</item>
-        <item name="android:layout_gravity">center</item>
     </style>
 </resources>

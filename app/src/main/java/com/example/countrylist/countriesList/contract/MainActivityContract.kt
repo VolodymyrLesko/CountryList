@@ -1,8 +1,8 @@
-package com.example.countrylist.contracts
+package com.example.countrylist.countriesList.contract
 
 import com.example.countrylist.CountriesListQuery
-import com.example.countrylist.presenters.BasePresenter
-import com.example.countrylist.views.BaseView
+import com.example.countrylist.base.presenters.BasePresenter
+import com.example.countrylist.base.views.BaseView
 
 interface MainActivityContract {
     interface Presenter : BasePresenter {

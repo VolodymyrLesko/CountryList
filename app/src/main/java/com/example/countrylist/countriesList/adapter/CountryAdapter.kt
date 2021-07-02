@@ -1,11 +1,11 @@
-package com.example.countrylist.adapter
+package com.example.countrylist.countriesList.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.countrylist.CountriesListQuery
 import com.example.countrylist.R
-import com.example.countrylist.adapter.viewHolders.CountryListViewHolder
+import com.example.countrylist.countriesList.adapter.viewHolder.CountryListViewHolder
 
 class CountryAdapter(
     private val listener: RVOnClickListener

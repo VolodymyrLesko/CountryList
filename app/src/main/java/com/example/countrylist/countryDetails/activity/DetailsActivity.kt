@@ -1,4 +1,4 @@
-package com.example.countrylist.activities
+package com.example.countrylist.countryDetails.activity
 
 import android.os.Bundle
 import android.widget.ProgressBar
@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.apollographql.apollo.api.Response
 import com.example.countrylist.GetCountryQuery
 import com.example.countrylist.R
-import com.example.countrylist.adapter.LanguageAdapter
-import com.example.countrylist.contracts.DetailsActivityContract
-import com.example.countrylist.presenters.DetailsActivityPresenter
-import com.example.countrylist.repository.implementation.CountryRepositoryImpl
+import com.example.countrylist.countryDetails.adapter.LanguageAdapter
+import com.example.countrylist.countryDetails.contract.DetailsActivityContract
+import com.example.countrylist.countryDetails.presenter.DetailsActivityPresenter
+import com.example.countrylist.base.repository.implementation.CountryRepositoryImpl
 
 class DetailsActivity : AppCompatActivity(), DetailsActivityContract.View {
     private lateinit var detailsActivityPresenter: DetailsActivityContract.Presenter

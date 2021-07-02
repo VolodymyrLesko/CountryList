@@ -1,4 +1,4 @@
-package com.example.countrylist.views
+package com.example.countrylist.base.views
 
 interface BaseView<T> {
     fun setPresenter(presenter: T)

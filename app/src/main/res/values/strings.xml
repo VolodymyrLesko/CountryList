@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Country list</string>
+    <string name="languages">Languages:</string>
+    <string name="currency">Currency:</string>
+    <string name="region">Region:</string>
+    <string name="capital">Capital:</string>
+    <string name="country">Country:</string>
+    <string name="main_activity_title">Choose a card :)</string>
 </resources>

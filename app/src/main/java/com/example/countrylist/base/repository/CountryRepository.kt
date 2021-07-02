@@ -1,4 +1,4 @@
-package com.example.countrylist.repository
+package com.example.countrylist.base.repository
 
 import com.apollographql.apollo.api.Response
 import com.example.countrylist.CountriesListQuery

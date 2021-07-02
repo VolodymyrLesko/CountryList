@@ -1,4 +1,4 @@
-package com.example.countrylist.activities
+package com.example.countrylist.countriesList.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,10 +8,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.countrylist.CountriesListQuery
 import com.example.countrylist.R
-import com.example.countrylist.adapter.CountryAdapter
-import com.example.countrylist.contracts.MainActivityContract
-import com.example.countrylist.presenters.MainActivityPresenter
-import com.example.countrylist.repository.implementation.CountryRepositoryImpl
+import com.example.countrylist.countryDetails.activity.DetailsActivity
+import com.example.countrylist.countriesList.adapter.CountryAdapter
+import com.example.countrylist.countriesList.contract.MainActivityContract
+import com.example.countrylist.countriesList.presenter.MainActivityPresenter
+import com.example.countrylist.base.repository.implementation.CountryRepositoryImpl
 
 class MainActivity : AppCompatActivity(), CountryAdapter.RVOnClickListener,
     MainActivityContract.View {

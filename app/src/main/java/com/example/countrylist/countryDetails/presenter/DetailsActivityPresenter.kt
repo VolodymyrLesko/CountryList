@@ -1,7 +1,7 @@
-package com.example.countrylist.presenters
+package com.example.countrylist.countryDetails.presenter
 
-import com.example.countrylist.contracts.DetailsActivityContract
-import com.example.countrylist.repository.implementation.CountryRepositoryImpl
+import com.example.countrylist.countryDetails.contract.DetailsActivityContract
+import com.example.countrylist.base.repository.implementation.CountryRepositoryImpl
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 

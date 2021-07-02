@@ -1,4 +1,4 @@
-package com.example.countrylist.adapter.viewHolders
+package com.example.countrylist.countryDetails.adapter.viewHolder
 
 import android.view.View
 import android.widget.TextView

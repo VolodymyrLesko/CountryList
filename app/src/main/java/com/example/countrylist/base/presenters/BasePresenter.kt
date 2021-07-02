@@ -1,4 +1,4 @@
-package com.example.countrylist.presenters
+package com.example.countrylist.base.presenters
 
 interface BasePresenter {
     fun onDestroy()
