@@ -3,16 +3,18 @@ package com.example.countrylist.countriesList.activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.countrylist.CountriesListQuery
 import com.example.countrylist.R
-import com.example.countrylist.countryDetails.activity.DetailsActivity
+import com.example.countrylist.base.constants.Utils
+import com.example.countrylist.base.repository.implementation.CountryRepositoryImpl
 import com.example.countrylist.countriesList.adapter.CountryAdapter
 import com.example.countrylist.countriesList.contract.MainActivityContract
 import com.example.countrylist.countriesList.presenter.MainActivityPresenter
-import com.example.countrylist.base.repository.implementation.CountryRepositoryImpl
+import com.example.countrylist.countryDetails.activity.DetailsActivity
 
 class MainActivity : AppCompatActivity(), CountryAdapter.RVOnClickListener,
     MainActivityContract.View {
@@ -28,12 +30,7 @@ class MainActivity : AppCompatActivity(), CountryAdapter.RVOnClickListener,
         setContentView(R.layout.activity_main)
 
         progressBar = findViewById(R.id.mainProgressBar)
-        val countryListRV = findViewById<RecyclerView>(R.id.countriesRV)
-        countryAdapter = CountryAdapter(this)
-        countryListRV.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = countryAdapter
-        }
+        initCountriesList()
         setPresenter(MainActivityPresenter(this, CountryRepositoryImpl()))
         mainActivityPresenter.onViewCreated()
     }
@@ -49,13 +46,9 @@ class MainActivity : AppCompatActivity(), CountryAdapter.RVOnClickListener,
 
     override fun onClick(position: Int) {
         intent = Intent(this, DetailsActivity::class.java).apply {
-            putExtra(CODE, countriesList[position].code)
+            putExtra(Utils.CODE, countriesList[position].code)
         }
         startActivity(intent)
-    }
-
-    companion object {
-        const val CODE = "code"
     }
 
     override fun displayCountriesList(countriesList: List<CountriesListQuery.Country>) {
@@ -65,5 +58,25 @@ class MainActivity : AppCompatActivity(), CountryAdapter.RVOnClickListener,
 
     override fun hideProgressBar() {
         progressBar.visibility = ProgressBar.GONE
+    }
+
+    override fun showProgressBar() {
+        progressBar.visibility = ProgressBar.VISIBLE
+    }
+
+    override fun showError() {
+        Toast.makeText(
+            this, "Something goes wrong :(",
+            Toast.LENGTH_LONG
+        ).show()
+    }
+
+    private fun initCountriesList() {
+        val countryListRV = findViewById<RecyclerView>(R.id.countriesRV)
+        countryAdapter = CountryAdapter(this)
+        countryListRV.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = countryAdapter
+        }
     }
 }

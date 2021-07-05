@@ -1,31 +1,39 @@
 package com.example.countrylist.countryDetails.presenter
 
-import com.example.countrylist.countryDetails.contract.DetailsActivityContract
 import com.example.countrylist.base.repository.implementation.CountryRepositoryImpl
+import com.example.countrylist.countryDetails.contract.DetailsActivityContract
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 class DetailsActivityPresenter(
-    view: DetailsActivityContract.View,
-    repository: CountryRepositoryImpl
+    private var view: DetailsActivityContract.View?,
+    private val countryRepository: CountryRepositoryImpl
 ) : DetailsActivityContract.Presenter {
-    private val countryRepository = repository
-    private var view: DetailsActivityContract.View? = view
 
     override fun onLoadCountryDetails(code: String) {
+        view?.showProgressBar()
         countryRepository.getCountryDetails(code)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 view?.displayCountryDetails(it)
             }, {
-                it.printStackTrace()
+                view?.hideProgressBar()
+                view?.showError()
             }, {
                 view?.hideProgressBar()
             })
     }
 
     override fun onDestroy() {
+        this.view = null
+    }
+
+    fun attachView(view: DetailsActivityContract.View?) {
+        this.view = view
+    }
+
+    fun detachView() {
         this.view = null
     }
 }
