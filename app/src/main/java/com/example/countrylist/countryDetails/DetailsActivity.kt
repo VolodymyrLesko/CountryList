@@ -1,4 +1,4 @@
-package com.example.countrylist.countryDetails.activity
+package com.example.countrylist.countryDetails
 
 import android.os.Bundle
 import android.widget.ProgressBar
@@ -13,38 +13,28 @@ import com.example.countrylist.R
 import com.example.countrylist.base.constants.Utils
 import com.example.countrylist.base.repository.implementation.CountryRepositoryImpl
 import com.example.countrylist.countryDetails.adapter.LanguageAdapter
-import com.example.countrylist.countryDetails.contract.DetailsActivityContract
-import com.example.countrylist.countryDetails.presenter.DetailsActivityPresenter
 
-class DetailsActivity : AppCompatActivity(), DetailsActivityContract.View {
-    private lateinit var detailsActivityPresenter: DetailsActivityContract.Presenter
-    private lateinit var txtName: TextView
-    private lateinit var txtCapital: TextView
-    private lateinit var txtRegion: TextView
-    private lateinit var txtCurrency: TextView
-    private lateinit var languageAdapter: LanguageAdapter
-    private lateinit var detailsProgressBar: ProgressBar
+class DetailsActivity : AppCompatActivity(), DetailsContract.DetailsView {
+    private val detailsActivityPresenter = DetailsPresenter(
+        this, CountryRepositoryImpl()
+    )
+    private val txtName: TextView by lazy { findViewById(R.id.details_country_name) }
+    private val txtCapital: TextView by lazy { findViewById(R.id.details_capital_name) }
+    private val txtRegion: TextView by lazy { findViewById(R.id.details_region_name) }
+    private val txtCurrency: TextView by lazy { findViewById(R.id.details_curency) }
+    private val languageAdapter = LanguageAdapter()
+    private val detailsProgressBar: ProgressBar by lazy { findViewById(R.id.detailsProgressBar) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
-        detailsProgressBar = findViewById(R.id.detailsProgressBar)
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.include)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        txtName = findViewById(R.id.details_country_name)
-        txtCapital = findViewById(R.id.details_capital_name)
-        txtRegion = findViewById(R.id.details_region_name)
-        txtCurrency = findViewById(R.id.details_curency)
+        supportActionBar?.title = ""
         initLanguagesList()
-        setPresenter(DetailsActivityPresenter(this, CountryRepositoryImpl()))
         intent.extras?.getString(Utils.CODE)
-            ?.let { detailsActivityPresenter.onLoadCountryDetails(it) }
-    }
-
-    override fun onDestroy() {
-        detailsActivityPresenter.onDestroy()
-        super.onDestroy()
+            ?.let { detailsActivityPresenter.getCountryDetails(it) }
     }
 
     override fun displayCountryDetails(countryDetails: Response<GetCountryQuery.Data>) {
@@ -58,10 +48,6 @@ class DetailsActivity : AppCompatActivity(), DetailsActivityContract.View {
 
     }
 
-    override fun setPresenter(presenter: DetailsActivityContract.Presenter) {
-        this.detailsActivityPresenter = presenter
-    }
-
     override fun hideProgressBar() {
         detailsProgressBar.visibility = ProgressBar.GONE
     }
@@ -70,16 +56,15 @@ class DetailsActivity : AppCompatActivity(), DetailsActivityContract.View {
         detailsProgressBar.visibility = ProgressBar.VISIBLE
     }
 
-    override fun showError() {
+    override fun showError(message: String) {
         Toast.makeText(
-            this, "Something goes wrong :(",
+            this, message,
             Toast.LENGTH_LONG
         ).show()
     }
 
     private fun initLanguagesList() {
         val languageRecyclerView = findViewById<RecyclerView>(R.id.langRV)
-        languageAdapter = LanguageAdapter()
         languageRecyclerView.apply {
             languageRecyclerView.layoutManager = LinearLayoutManager(
                 this@DetailsActivity, RecyclerView.HORIZONTAL, false

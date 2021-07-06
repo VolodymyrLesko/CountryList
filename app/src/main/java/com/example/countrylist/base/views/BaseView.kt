@@ -1,8 +1,7 @@
 package com.example.countrylist.base.views
 
-interface BaseView<T> {
-    fun setPresenter(presenter: T)
+interface BaseView {
     fun hideProgressBar()
     fun showProgressBar()
-    fun showError()
+    fun showError(message: String)
 }

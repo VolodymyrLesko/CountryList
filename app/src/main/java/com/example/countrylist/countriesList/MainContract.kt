@@ -1,16 +1,16 @@
-package com.example.countrylist.countriesList.contract
+package com.example.countrylist.countriesList
 
 import com.example.countrylist.CountriesListQuery
 import com.example.countrylist.base.presenters.BasePresenter
 import com.example.countrylist.base.views.BaseView
 
-interface MainActivityContract {
-    interface Presenter : BasePresenter {
-        fun onViewCreated()
-        fun onLoadCountriesList()
+interface MainContract {
+    interface Presenter : BasePresenter<MainView> {
+        fun getCountriesList()
     }
 
-    interface View : BaseView<Presenter> {
+    interface MainView : BaseView {
         fun displayCountriesList(countriesList: List<CountriesListQuery.Country>)
+        fun startNewActivity(code: String)
     }
 }

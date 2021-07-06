@@ -1,76 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
 
     android:padding="13dp"
     android:paddingTop="26dp">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/country_card"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:id="@+id/country_card">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/country_bg_style"
-            android:outlineSpotShadowColor="@color/black"/>
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:background="@drawable/country_bg_style" />
 
-            <LinearLayout
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="12dp"
+            android:orientation="vertical"
+            android:paddingBottom="12dp">
+
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="12dp">
+                android:layout_height="wrap_content"
+                android:text="@string/country"
+                android:textSize="@dimen/country_list_card_title" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/country"
-                    android:textSize="@dimen/country_list_card_title" />
+            <TextView
+                android:id="@+id/country_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="@dimen/country_list_country_name"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/country_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textSize="@dimen/country_list_country_name"
-                    android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/capital"
+                android:textSize="@dimen/country_list_card_title" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/capital"
-                    android:textSize="@dimen/country_list_card_title" />
+            <TextView
+                android:id="@+id/capital_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="@dimen/country_list_value"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/capital_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textSize="@dimen/country_list_value"
-                    android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/region"
+                android:textSize="@dimen/country_list_card_title" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/region"
-                    android:textSize="@dimen/country_list_card_title" />
-
-                <TextView
-                    android:id="@+id/region_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textSize="@dimen/country_list_value"
-                    android:textStyle="bold" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/region_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="@dimen/country_list_value"
+                android:textStyle="bold" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>

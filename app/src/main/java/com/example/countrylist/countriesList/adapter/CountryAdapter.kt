@@ -7,12 +7,15 @@ import com.example.countrylist.CountriesListQuery
 import com.example.countrylist.R
 import com.example.countrylist.countriesList.adapter.viewHolder.CountryListViewHolder
 
-class CountryAdapter(
-    private val listener: RVOnClickListener
-) :
+class CountryAdapter :
     RecyclerView.Adapter<CountryListViewHolder>() {
 
     private var countriesList = emptyList<CountriesListQuery.Country>()
+    private var listener: RVOnClickListener? = null
+
+    fun setOnClickListener(listener: RVOnClickListener) {
+        this.listener = listener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountryListViewHolder {
         val item = LayoutInflater.from(parent.context).inflate(R.layout.country_card, parent, false)

@@ -1,5 +1,6 @@
 package com.example.countrylist.base.presenters
 
-interface BasePresenter {
-    fun onDestroy()
+interface BasePresenter<T> {
+    fun attachView(view: T)
+    fun detachView()
 }

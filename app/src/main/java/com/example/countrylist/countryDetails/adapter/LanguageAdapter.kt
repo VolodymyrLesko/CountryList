@@ -7,7 +7,7 @@ import com.example.countrylist.GetCountryQuery
 import com.example.countrylist.R
 import com.example.countrylist.countryDetails.adapter.viewHolder.LanguageViewHolder
 
-class LanguageAdapter:
+class LanguageAdapter :
     RecyclerView.Adapter<LanguageViewHolder>() {
 
     private var languagesList = emptyList<GetCountryQuery.Language>()
