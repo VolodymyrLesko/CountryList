@@ -17,15 +17,21 @@ import com.example.countrylist.countryDetails.DetailsActivity
 class MainActivity : AppCompatActivity(),
     MainContract.MainView {
 
-    private val mainActivityPresenter = MainPresenter(this, CountryRepositoryImpl())
+    private val mainActivityPresenter = MainPresenter(CountryRepositoryImpl())
     private val countryAdapter = CountryAdapter()
     private val progressBar: ProgressBar by lazy { findViewById(R.id.mainProgressBar) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        mainActivityPresenter.attachView(this)
         initCountriesList()
         mainActivityPresenter.getCountriesList()
+    }
+
+    override fun onDestroy() {
+        mainActivityPresenter.detachView()
+        super.onDestroy()
     }
 
     override fun displayCountriesList(countriesList: List<CountriesListQuery.Country>) {

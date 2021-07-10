@@ -1,15 +1,14 @@
 package com.example.countrylist.countryDetails
 
 import com.example.countrylist.base.constants.Utils
-import com.example.countrylist.base.repository.implementation.CountryRepositoryImpl
+import com.example.countrylist.base.repository.CountryRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 class DetailsPresenter(
-    private var detailsView: DetailsContract.DetailsView?,
-    private val countryRepository: CountryRepositoryImpl
+    private val countryRepository: CountryRepository
 ) : DetailsContract.Presenter {
-
+    private var detailsView: DetailsContract.DetailsView? = null
     override fun getCountryDetails(code: String) {
         detailsView?.showProgressBar()
         countryRepository.getCountryDetails(code)
