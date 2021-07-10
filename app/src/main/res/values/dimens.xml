@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="country_list_card_title">12sp</dimen>
+    <dimen name="country_list_country_name">32sp</dimen>
+    <dimen name="country_list_value">24sp</dimen>
+    <dimen name="main_activity_title">44sp</dimen>
+    <dimen name="details_text_size">20sp</dimen>
+</resources>
