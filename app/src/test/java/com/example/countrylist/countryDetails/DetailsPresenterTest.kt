@@ -15,14 +15,10 @@ class DetailsPresenterTest {
     private lateinit var countryRepository: CountryRepository
     private lateinit var presenter: DetailsPresenter
     private val string: String = "data:{" +
-            "[Country(" +
-            "__typename=Country, " +
-            "code=AD, name=Andorra, " +
-            "capital=Andorra la Vella, " +
-            "continent=Continent(" +
-            "__typename=Continent, " +
-            "name=Europe)" +
-            ")]" +
+            "Data(country=Country(__typename=Country, name=Andorra," +
+            " capital=Andorra la Vella, continent=Continent(__typename=Continent," +
+            " name=Europe), currency=EUR, languages=[Language(__typename=Language," +
+            " name=Catalan)]))" +
             "}"
 
     private val response: Response<GetCountryQuery.Data> =
@@ -43,6 +39,6 @@ class DetailsPresenterTest {
             )
         )
         presenter.getCountryDetails("AD")
-        verify(countryRepository, times(1)).getCountryDetails("UA")
+        verify(countryRepository, times(1)).getCountryDetails("AD")
     }
 }
