@@ -10,22 +10,72 @@ import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasExtra
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.apollographql.apollo.api.Response
+import com.example.countrylist.CountriesListQuery
 import com.example.countrylist.R
 import com.example.countrylist.base.constants.Utils
+import com.example.countrylist.base.repository.CountryRepository
+import io.reactivex.rxjava3.core.Observable
+import okio.ByteString.Companion.encodeUtf8
 import org.hamcrest.Matchers.allOf
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mock
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
 
 @RunWith(AndroidJUnit4::class)
 class MainActivityTest {
     val COUNTRY_NAME = "Andorra"
     val COUNTRY_CODE = "AD"
 
+    @Mock
+    private lateinit var countryRepository: CountryRepository
+    private lateinit var activityScenario: ActivityScenario<MainActivity>
+    private val responseString = "{\n" +
+            "  \"data\": {\n" +
+            "    \"countries\": [\n" +
+            "      {\n" +
+            "        \"__typename\": \"Country\",\n" +
+            "        \"code\": \"AD\",\n" +
+            "        \"name\": \"Andorra\",\n" +
+            "        \"capital\": \"Andorra la Vella\",\n" +
+            "        \"continent\": {\n" +
+            "          \"__typename\": \"Continent\",\n" +
+            "          \"name\": \"Europe\"\n" +
+            "        }\n" +
+            "      },\n" +
+            "      {\n" +
+            "        \"__typename\": \"Country\",\n" +
+            "        \"code\": \"AE\",\n" +
+            "        \"name\": \"United Arab Emirates\",\n" +
+            "        \"capital\": \"Abu Dhabi\",\n" +
+            "        \"continent\": {\n" +
+            "          \"__typename\": \"Continent\",\n" +
+            "          \"name\": \"Asia\"\n" +
+            "        }\n" +
+            "      },\n" +
+            "      {\n" +
+            "        \"__typename\": \"Country\",\n" +
+            "        \"code\": \"AF\",\n" +
+            "        \"name\": \"Afghanistan\",\n" +
+            "        \"capital\": \"Kabul\",\n" +
+            "        \"continent\": {\n" +
+            "          \"__typename\": \"Continent\",\n" +
+            "          \"name\": \"Asia\"\n" +
+            "        }\n" +
+            "      }]" +
+            "   }" +
+            "}"
+    private val response: Response<CountriesListQuery.Data> =
+        CountriesListQuery().parse(responseString.encodeUtf8())
+
     @Before
     fun setUp() {
-        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
+        countryRepository = mock(CountryRepository::class.java)
+        activityScenario = ActivityScenario.launch(MainActivity::class.java)
         Intents.init()
     }
 
@@ -36,7 +86,11 @@ class MainActivityTest {
 
     @Test
     fun verifySendingToDetailsPage() {
-        Thread.sleep(2500)
+        `when`(countryRepository.getCountryList()).thenReturn(
+            Observable.just(
+                response
+            )
+        )
         onView(withText(COUNTRY_NAME)).perform(click())
         intended(
             allOf(

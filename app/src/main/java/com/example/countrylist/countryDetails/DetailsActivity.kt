@@ -30,7 +30,7 @@ class DetailsActivity : AppCompatActivity(), DetailsContract.DetailsView {
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.include)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = ""
+        supportActionBar?.setDisplayShowTitleEnabled(false)
         initLanguagesList()
         intent.extras?.getString(Utils.CODE)
             ?.let { detailsActivityPresenter.getCountryDetails(it) }
