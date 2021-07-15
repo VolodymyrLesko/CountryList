@@ -12,6 +12,7 @@ import com.example.countrylist.GetCountryQuery
 import com.example.countrylist.R
 import com.example.countrylist.base.constants.Utils
 import com.example.countrylist.base.repository.implementation.CountryRepositoryImpl
+import com.example.countrylist.countriesList.MainActivity
 import com.example.countrylist.countryDetails.adapter.LanguageAdapter
 
 class DetailsActivity : AppCompatActivity(), DetailsContract.DetailsView {

@@ -1,5 +1,6 @@
 package com.example.countrylist.countriesList
 
+import androidx.annotation.VisibleForTesting
 import com.example.countrylist.CountriesListQuery
 import com.example.countrylist.base.constants.Utils
 import com.example.countrylist.base.repository.CountryRepository
@@ -8,7 +9,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 class MainPresenter(
-    private val countryRepository: CountryRepository
+    private var countryRepository: CountryRepository
 ) : MainContract.Presenter, CountryAdapter.RVOnClickListener {
     private var mainView: MainContract.MainView? = null
     private lateinit var countriesList: List<CountriesListQuery.Country>
@@ -39,5 +40,9 @@ class MainPresenter(
 
     override fun onClick(position: Int) {
         mainView?.startNewActivity(countriesList[position].code)
+    }
+
+    fun setRepository(repository: CountryRepository) {
+        this.countryRepository = repository
     }
 }

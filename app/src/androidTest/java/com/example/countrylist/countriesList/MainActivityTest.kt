@@ -10,6 +10,7 @@ import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasExtra
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.filters.LargeTest
 import com.apollographql.apollo.api.Response
 import com.example.countrylist.CountriesListQuery
 import com.example.countrylist.R
@@ -18,6 +19,7 @@ import com.example.countrylist.base.repository.CountryRepository
 import io.reactivex.rxjava3.core.Observable
 import okio.ByteString.Companion.encodeUtf8
 import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -27,55 +29,21 @@ import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 
 @RunWith(AndroidJUnit4::class)
+@LargeTest
 class MainActivityTest {
-    val COUNTRY_NAME = "Andorra"
-    val COUNTRY_CODE = "AD"
-
     @Mock
-    private lateinit var countryRepository: CountryRepository
+    private val countryRepository = mock(CountryRepository::class.java)
     private lateinit var activityScenario: ActivityScenario<MainActivity>
-    private val responseString = "{\n" +
-            "  \"data\": {\n" +
-            "    \"countries\": [\n" +
-            "      {\n" +
-            "        \"__typename\": \"Country\",\n" +
-            "        \"code\": \"AD\",\n" +
-            "        \"name\": \"Andorra\",\n" +
-            "        \"capital\": \"Andorra la Vella\",\n" +
-            "        \"continent\": {\n" +
-            "          \"__typename\": \"Continent\",\n" +
-            "          \"name\": \"Europe\"\n" +
-            "        }\n" +
-            "      },\n" +
-            "      {\n" +
-            "        \"__typename\": \"Country\",\n" +
-            "        \"code\": \"AE\",\n" +
-            "        \"name\": \"United Arab Emirates\",\n" +
-            "        \"capital\": \"Abu Dhabi\",\n" +
-            "        \"continent\": {\n" +
-            "          \"__typename\": \"Continent\",\n" +
-            "          \"name\": \"Asia\"\n" +
-            "        }\n" +
-            "      },\n" +
-            "      {\n" +
-            "        \"__typename\": \"Country\",\n" +
-            "        \"code\": \"AF\",\n" +
-            "        \"name\": \"Afghanistan\",\n" +
-            "        \"capital\": \"Kabul\",\n" +
-            "        \"continent\": {\n" +
-            "          \"__typename\": \"Continent\",\n" +
-            "          \"name\": \"Asia\"\n" +
-            "        }\n" +
-            "      }]" +
-            "   }" +
-            "}"
     private val response: Response<CountriesListQuery.Data> =
-        CountriesListQuery().parse(responseString.encodeUtf8())
+        CountriesListQuery().parse(Utils.COUNTRY_LIST_RESPONSE.encodeUtf8())
 
     @Before
     fun setUp() {
-        countryRepository = mock(CountryRepository::class.java)
-        activityScenario = ActivityScenario.launch(MainActivity::class.java)
+        activityScenario = ActivityScenario.launch(MainActivity::class.java).apply {
+            onActivity {
+                it.mainActivityPresenter.setRepository(countryRepository)
+            }
+        }
         Intents.init()
     }
 
@@ -91,39 +59,81 @@ class MainActivityTest {
                 response
             )
         )
-        onView(withText(COUNTRY_NAME)).perform(click())
+        activityScenario.onActivity {
+            it.mainActivityPresenter.getCountriesList()
+        }
+        onView(withText(Utils.TEST_COUNTRY_NAME)).perform(click())
         intended(
             allOf(
-                hasExtra(Utils.CODE, COUNTRY_CODE),
+                hasExtra(Utils.CODE, Utils.TEST_COUNTRY_CODE),
             )
         )
     }
 
     @Test
     fun verifyCorrectDataOnDetailsPage() {
-        Thread.sleep(2500)
-        onView(withText(COUNTRY_NAME)).perform(click())
+        `when`(countryRepository.getCountryList()).thenReturn(
+            Observable.just(
+                response
+            )
+        )
+        activityScenario.onActivity {
+            it.mainActivityPresenter.getCountriesList()
+        }
+        onView(withText(Utils.TEST_COUNTRY_NAME)).perform(click())
         Thread.sleep(200)
-        onView(withId(R.id.details_country_name)).check(matches(withText(COUNTRY_NAME)))
+        onView(withId(R.id.details_country_name)).check(matches(withText(Utils.TEST_COUNTRY_NAME)))
         onView(withId(R.id.details_capital_name)).check(matches(withText("Andorra la Vella")))
         onView(withId(R.id.details_region_name)).check(matches(withText("Europe")))
     }
 
     @Test
     fun navToDetailsActivityTest() {
-        Thread.sleep(2500)
-        onView(withText(COUNTRY_NAME)).perform(click())
-
+        `when`(countryRepository.getCountryList()).thenReturn(
+            Observable.just(
+                response
+            )
+        )
+        activityScenario.onActivity {
+            it.mainActivityPresenter.getCountriesList()
+        }
+        onView(withText(Utils.TEST_COUNTRY_NAME)).perform(click())
         onView(withId(R.id.details_country_name_title)).check(matches(isDisplayed()))
     }
 
     @Test
     fun backToMainActivityTest() {
-        Thread.sleep(2500)
-        onView(withText(COUNTRY_NAME)).perform(click())
+        `when`(countryRepository.getCountryList()).thenReturn(
+            Observable.just(
+                response
+            )
+        )
+        activityScenario.onActivity {
+            it.mainActivityPresenter.getCountriesList()
+        }
+        onView(withText(Utils.TEST_COUNTRY_NAME)).perform(click())
         Thread.sleep(200)
-        onView(withId(R.id.details_country_name)).check(matches(withText(COUNTRY_NAME)))
+        onView(withId(R.id.details_country_name)).check(matches(withText(Utils.TEST_COUNTRY_NAME)))
         pressBack()
-        onView(withId(R.id.image1)).check(matches(isDisplayed()))
+        onView(withId(R.id.image1))
+    }
+
+    @Test
+    fun isProgressbarDisplays() {
+        onView(withId(R.id.mainProgressBar)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun isProgressbarGone() {
+        `when`(countryRepository.getCountryList()).thenReturn(
+            Observable.just(
+                response
+            )
+        )
+        onView(withId(R.id.mainProgressBar)).check(matches(isDisplayed()))
+        activityScenario.onActivity {
+            it.mainActivityPresenter.getCountriesList()
+        }
+        onView(withId(R.id.mainProgressBar)).check(matches(not(isDisplayed())))
     }
 }
