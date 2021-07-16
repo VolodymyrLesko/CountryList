@@ -12,12 +12,11 @@ import com.example.countrylist.GetCountryQuery
 import com.example.countrylist.R
 import com.example.countrylist.base.constants.Utils
 import com.example.countrylist.base.repository.implementation.CountryRepositoryImpl
+import com.example.countrylist.countriesList.MainActivity
 import com.example.countrylist.countryDetails.adapter.LanguageAdapter
 
 class DetailsActivity : AppCompatActivity(), DetailsContract.DetailsView {
-    private val detailsActivityPresenter = DetailsPresenter(
-        this, CountryRepositoryImpl()
-    )
+    private val detailsActivityPresenter = DetailsPresenter(CountryRepositoryImpl())
     private val txtName: TextView by lazy { findViewById(R.id.details_country_name) }
     private val txtCapital: TextView by lazy { findViewById(R.id.details_capital_name) }
     private val txtRegion: TextView by lazy { findViewById(R.id.details_region_name) }
@@ -28,13 +27,19 @@ class DetailsActivity : AppCompatActivity(), DetailsContract.DetailsView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
+        detailsActivityPresenter.attachView(this)
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.include)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = ""
+        supportActionBar?.setDisplayShowTitleEnabled(false)
         initLanguagesList()
         intent.extras?.getString(Utils.CODE)
             ?.let { detailsActivityPresenter.getCountryDetails(it) }
+    }
+
+    override fun onDestroy() {
+        detailsActivityPresenter.detachView()
+        super.onDestroy()
     }
 
     override fun displayCountryDetails(countryDetails: Response<GetCountryQuery.Data>) {
