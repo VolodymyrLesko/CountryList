@@ -14,7 +14,8 @@
         <activity
             android:name=".countryDetails.DetailsActivity"
             android:parentActivityName=".countriesList.MainActivity" />
-        <activity android:name=".countriesList.MainActivity">
+        <activity android:name=".countriesList.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -10,23 +10,19 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 class MainPresenter(
     private var mainView: MainContract.MainView?,
     private val countryRepository: CountryRepositoryImpl
-) : MainContract.Presenter, CountryAdapter.RVOnClickListener {
+) : MainContract.Presenter {
 
     private lateinit var countriesList: List<CountriesListQuery.Country>
 
     override fun getCountriesList() {
-        mainView?.showProgressBar()
         countryRepository.getCountryList()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 it.data?.let { it1 -> countriesList = it1.countries }
-                mainView?.displayCountriesList(countriesList)
             }, {
-                mainView?.hideProgressBar()
                 mainView?.showError(Utils.ERROR_MESSAGE)
             }, {
-                mainView?.hideProgressBar()
             })
     }
 
@@ -36,9 +32,5 @@ class MainPresenter(
 
     override fun detachView() {
         this.mainView = null
-    }
-
-    override fun onClick(position: Int) {
-        mainView?.startNewActivity(countriesList[position].code)
     }
 }

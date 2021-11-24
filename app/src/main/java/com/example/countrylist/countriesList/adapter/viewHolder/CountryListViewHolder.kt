@@ -8,18 +8,14 @@ import com.example.countrylist.countriesList.adapter.CountryAdapter
 
 class CountryListViewHolder(
     itemView: View,
-    private val listener: CountryAdapter.RVOnClickListener?
-) :
-    RecyclerView.ViewHolder(itemView), View.OnClickListener {
-    val txtTitle: TextView = itemView.findViewById(R.id.country_name)
-    val txtCapital: TextView = itemView.findViewById(R.id.capital_name)
-    val txtRegion: TextView = itemView.findViewById(R.id.region_name)
+) : RecyclerView.ViewHolder(itemView){
+    val txtTitle: TextView
+    val txtCapital: TextView
+    val txtRegion: TextView
 
     init {
-        itemView.setOnClickListener(this)
-    }
-
-    override fun onClick(v: View?) {
-        listener?.onClick(adapterPosition)
+        txtTitle = itemView.findViewById(R.id.country_name)
+        txtCapital = itemView.findViewById(R.id.capital_name)
+        txtRegion = itemView.findViewById(R.id.region_name)
     }
 }

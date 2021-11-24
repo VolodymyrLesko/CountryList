@@ -23,7 +23,6 @@ class DetailsActivity : AppCompatActivity(), DetailsContract.DetailsView {
     private val txtRegion: TextView by lazy { findViewById(R.id.details_region_name) }
     private val txtCurrency: TextView by lazy { findViewById(R.id.details_curency) }
     private val languageAdapter = LanguageAdapter()
-    private val detailsProgressBar: ProgressBar by lazy { findViewById(R.id.detailsProgressBar) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,14 +45,6 @@ class DetailsActivity : AppCompatActivity(), DetailsContract.DetailsView {
             it?.languages?.let { item -> languageAdapter.setList(item) }
         }
 
-    }
-
-    override fun hideProgressBar() {
-        detailsProgressBar.visibility = ProgressBar.GONE
-    }
-
-    override fun showProgressBar() {
-        detailsProgressBar.visibility = ProgressBar.VISIBLE
     }
 
     override fun showError(message: String) {
