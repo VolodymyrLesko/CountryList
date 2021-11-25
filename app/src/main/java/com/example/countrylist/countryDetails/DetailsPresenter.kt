@@ -11,17 +11,14 @@ class DetailsPresenter(
 ) : DetailsContract.Presenter {
 
     override fun getCountryDetails(code: String) {
-        detailsView?.showProgressBar()
         countryRepository.getCountryDetails(code)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 detailsView?.displayCountryDetails(it)
             }, {
-                detailsView?.hideProgressBar()
                 detailsView?.showError(Utils.ERROR_MESSAGE)
             }, {
-                detailsView?.hideProgressBar()
             })
     }
 
