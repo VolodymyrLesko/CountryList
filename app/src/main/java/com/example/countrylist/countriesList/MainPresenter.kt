@@ -1,5 +1,6 @@
 package com.example.countrylist.countriesList
 
+import android.view.View
 import com.example.countrylist.CountriesListQuery
 import com.example.countrylist.base.constants.Utils
 import com.example.countrylist.base.repository.implementation.CountryRepositoryImpl
@@ -20,6 +21,7 @@ class MainPresenter(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 it.data?.let { it1 -> countriesList = it1.countries }
+                mainView?.displayCountriesList(countriesList)
             }, {
                 mainView?.showError(Utils.ERROR_MESSAGE)
             }, {

@@ -10,6 +10,6 @@ interface MainContract {
     }
 
     interface MainView : BaseView {
-        fun startNewActivity(code: String)
+        fun displayCountriesList(countriesList: List<CountriesListQuery.Country>)
     }
 }

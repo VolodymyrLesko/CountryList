@@ -1,40 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".MainFragment">
+    tools:context=".fragments.MainFragment">
 
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/countriesRV"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".countriesList.MainActivity">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:listitem="@layout/country_card" />
 
-        <include layout="@layout/toolbar" />
-
-        <ImageView
-            android:id="@+id/image1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/planet" />
-
-        <TextView
-            android:id="@+id/itext1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="41dp"
-            android:text="@string/main_activity_title"
-            android:textSize="@dimen/main_activity_title" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            tools:listitem="@layout/country_card"
-            android:id="@+id/countriesRV"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
-
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

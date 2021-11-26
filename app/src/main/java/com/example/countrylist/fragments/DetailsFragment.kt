@@ -1,27 +1,29 @@
-package com.example.countrylist
+package com.example.countrylist.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.LifecycleOwner
-import com.apollographql.apollo.api.Response
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import com.example.countrylist.GetCountryQuery
+import com.example.countrylist.R
+import com.example.countrylist.base.repository.implementation.CountryRepositoryImpl
+import com.example.countrylist.countryDetails.DetailsContract
+import com.example.countrylist.countryDetails.DetailsPresenter
 
 private const val ARG_PARAM1 = "param1"
 
-class DetailsFragment : Fragment() {
+class DetailsFragment : Fragment(), DetailsContract.DetailsView {
     private var param1: String? = null
-    private val dataModel: MainViewModel by viewModels()
+    private val detailsPresenter = DetailsPresenter(this, CountryRepositoryImpl())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
         }
-        dataModel.getCountryDetails(param1!!)
     }
 
     override fun onCreateView(
@@ -30,14 +32,12 @@ class DetailsFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_details, container, false)
-        dataModel.countryDetails.observe(activity as LifecycleOwner, {
-            displayCountryDetails(it, view)
-        })
+        detailsPresenter.getCountryDetails(param1!!, view)
         return view
     }
 
-    private fun displayCountryDetails(countryDetails: Response<GetCountryQuery.Data>, view: View) {
-        countryDetails.data?.country.apply {
+    override fun displayCountryDetails(countryDetails: GetCountryQuery.Data, view: View) {
+        countryDetails.country.apply {
             view.findViewById<TextView>(R.id.details_country_name).text = this?.name
             view.findViewById<TextView>(R.id.details_capital_name).text = this?.capital
             view.findViewById<TextView>(R.id.details_region_name).text = this?.continent?.name
@@ -53,5 +53,12 @@ class DetailsFragment : Fragment() {
                     putString(ARG_PARAM1, param1)
                 }
             }
+    }
+
+    override fun showError(message: String) {
+        Toast.makeText(
+            context, message,
+            Toast.LENGTH_LONG
+        ).show()
     }
 }
