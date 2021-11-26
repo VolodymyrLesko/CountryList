@@ -1,5 +1,6 @@
 package com.example.countrylist.countryDetails
 
+import android.view.View
 import com.example.countrylist.base.constants.Utils
 import com.example.countrylist.base.repository.implementation.CountryRepositoryImpl
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -10,18 +11,15 @@ class DetailsPresenter(
     private val countryRepository: CountryRepositoryImpl
 ) : DetailsContract.Presenter {
 
-    override fun getCountryDetails(code: String) {
-        detailsView?.showProgressBar()
+    override fun getCountryDetails(code: String, view: View) {
         countryRepository.getCountryDetails(code)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                detailsView?.displayCountryDetails(it)
+                detailsView?.displayCountryDetails(it.data!!, view)
             }, {
-                detailsView?.hideProgressBar()
                 detailsView?.showError(Utils.ERROR_MESSAGE)
             }, {
-                detailsView?.hideProgressBar()
             })
     }
 
