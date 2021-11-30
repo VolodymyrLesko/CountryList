@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Country list</string>
+    <string name="app_name">Country details</string>
     <string name="languages">Languages:</string>
     <string name="currency">Currency:</string>
     <string name="region">Region:</string>

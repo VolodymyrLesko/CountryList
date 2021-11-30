@@ -1,5 +1,8 @@
-package com.example.countrylist.countryDetails
+package com.example.countryDetails.countryDetails
 
+import android.content.BroadcastReceiver
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -8,13 +11,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.apollographql.apollo.api.Response
+import com.example.countryDetails.MyBroadcastReceiver
+import com.example.countryDetails.R
+import com.example.countryDetails.base.constants.Utils
+import com.example.countryDetails.base.repository.implementation.CountryRepositoryImpl
+import com.example.countryDetails.countryDetails.adapter.LanguageAdapter
 import com.example.countrylist.GetCountryQuery
-import com.example.countrylist.R
-import com.example.countrylist.base.constants.Utils
-import com.example.countrylist.base.repository.implementation.CountryRepositoryImpl
-import com.example.countrylist.countryDetails.adapter.LanguageAdapter
 
-class DetailsActivity : AppCompatActivity(), DetailsContract.DetailsView {
+class MainActivity : AppCompatActivity(), DetailsContract.DetailsView {
     private val detailsActivityPresenter = DetailsPresenter(
         this, CountryRepositoryImpl()
     )
@@ -24,17 +28,30 @@ class DetailsActivity : AppCompatActivity(), DetailsContract.DetailsView {
     private val txtCurrency: TextView by lazy { findViewById(R.id.details_curency) }
     private val languageAdapter = LanguageAdapter()
     private val detailsProgressBar: ProgressBar by lazy { findViewById(R.id.detailsProgressBar) }
+    private lateinit var broadcastReceiver: BroadcastReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.include)
         setSupportActionBar(toolbar)
+        broadcastReceiver = MyBroadcastReceiver(detailsActivityPresenter)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = ""
         initLanguagesList()
         intent.extras?.getString(Utils.CODE)
             ?.let { detailsActivityPresenter.getCountryDetails(it) }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val intentFilter = IntentFilter(Intent.ACTION_SEND)
+        registerReceiver(broadcastReceiver, intentFilter)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(broadcastReceiver)
     }
 
     override fun displayCountryDetails(countryDetails: Response<GetCountryQuery.Data>) {
@@ -67,7 +84,7 @@ class DetailsActivity : AppCompatActivity(), DetailsContract.DetailsView {
         val languageRecyclerView = findViewById<RecyclerView>(R.id.langRV)
         languageRecyclerView.apply {
             languageRecyclerView.layoutManager = LinearLayoutManager(
-                this@DetailsActivity, RecyclerView.HORIZONTAL, false
+                this@MainActivity, RecyclerView.HORIZONTAL, false
             )
             languageRecyclerView.adapter = languageAdapter
         }

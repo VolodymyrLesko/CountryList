@@ -1,9 +1,9 @@
-package com.example.countrylist.countryDetails.adapter.viewHolder
+package com.example.countryDetails.countryDetails.adapter.viewHolder
 
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.countrylist.R
+import com.example.countryDetails.R
 
 
 class LanguageViewHolder(itemView: View) :

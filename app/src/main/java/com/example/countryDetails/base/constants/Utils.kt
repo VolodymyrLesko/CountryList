@@ -1,4 +1,4 @@
-package com.example.countrylist.base.constants
+package com.example.countryDetails.base.constants
 
 class Utils {
     companion object {

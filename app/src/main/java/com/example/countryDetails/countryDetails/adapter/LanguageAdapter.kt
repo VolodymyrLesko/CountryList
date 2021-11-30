@@ -1,11 +1,11 @@
-package com.example.countrylist.countryDetails.adapter
+package com.example.countryDetails.countryDetails.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.countryDetails.R
+import com.example.countryDetails.countryDetails.adapter.viewHolder.LanguageViewHolder
 import com.example.countrylist.GetCountryQuery
-import com.example.countrylist.R
-import com.example.countrylist.countryDetails.adapter.viewHolder.LanguageViewHolder
 
 class LanguageAdapter :
     RecyclerView.Adapter<LanguageViewHolder>() {

@@ -1,4 +1,4 @@
-package com.example.countrylist.base.views
+package com.example.countryDetails.base.views
 
 interface BaseView {
     fun hideProgressBar()

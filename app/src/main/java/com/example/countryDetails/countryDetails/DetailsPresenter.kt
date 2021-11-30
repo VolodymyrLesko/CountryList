@@ -1,7 +1,7 @@
-package com.example.countrylist.countryDetails
+package com.example.countryDetails.countryDetails
 
-import com.example.countrylist.base.constants.Utils
-import com.example.countrylist.base.repository.implementation.CountryRepositoryImpl
+import com.example.countryDetails.base.constants.Utils
+import com.example.countryDetails.base.repository.implementation.CountryRepositoryImpl
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 

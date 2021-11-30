@@ -1,9 +1,9 @@
-package com.example.countrylist.countryDetails
+package com.example.countryDetails.countryDetails
 
 import com.apollographql.apollo.api.Response
+import com.example.countryDetails.base.presenters.BasePresenter
+import com.example.countryDetails.base.views.BaseView
 import com.example.countrylist.GetCountryQuery
-import com.example.countrylist.base.presenters.BasePresenter
-import com.example.countrylist.base.views.BaseView
 
 interface DetailsContract {
     interface Presenter : BasePresenter<DetailsView> {

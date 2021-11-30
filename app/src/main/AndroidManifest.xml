@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.countrylist">
+    package="com.example.countryDetails">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,16 +11,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CountryList">
-        <activity
-            android:name=".countryDetails.DetailsActivity"
-            android:parentActivityName=".countriesList.MainActivity" />
-        <activity android:name=".countriesList.MainActivity">
+        <activity android:name="com.example.countryDetails.countryDetails.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
+        <receiver android:name=".MyBroadcastReceiver"/>
     </application>
 
 </manifest>

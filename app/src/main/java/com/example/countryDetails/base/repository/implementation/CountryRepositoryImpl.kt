@@ -1,11 +1,11 @@
-package com.example.countrylist.base.repository.implementation
+package com.example.countryDetails.base.repository.implementation
 
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.rx3.rxQuery
+import com.example.countryDetails.base.repository.CountryRepository
 import com.example.countrylist.CountriesListQuery
 import com.example.countrylist.GetCountryQuery
-import com.example.countrylist.base.repository.CountryRepository
 import io.reactivex.rxjava3.core.Observable
 
 class CountryRepositoryImpl(

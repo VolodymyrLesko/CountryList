@@ -1,4 +1,4 @@
-package com.example.countrylist
+package com.example.countryDetails
 
 import org.junit.Test
 
