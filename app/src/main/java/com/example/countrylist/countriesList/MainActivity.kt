@@ -33,10 +33,16 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun startNewActivity(code: String) {
-        intent = Intent(this, DetailsActivity::class.java).apply {
+        val intent = Intent()
+        intent.apply {
+            action = Intent.ACTION_SEND
             putExtra(Utils.CODE, code)
+            addCategory(Intent.CATEGORY_DEFAULT)
+            type = "text/plain"
         }
-        startActivity(intent)
+        sendBroadcast(intent)
+        val shareIntent = Intent.createChooser(intent, null)
+        startActivity(shareIntent)
     }
 
     override fun hideProgressBar() {
