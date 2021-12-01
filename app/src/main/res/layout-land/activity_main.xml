@@ -20,15 +20,7 @@
             android:id="@+id/detailsFrame"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2">
-
-        <com.example.countrylist.base.views.BannerView
-            android:id="@+id/banner_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            />
-        </FrameLayout>
+            android:layout_weight="2" />
 
     </LinearLayout>
 
